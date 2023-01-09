@@ -4,7 +4,7 @@ data "azurerm_kubernetes_service_versions" "aks_version" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "${var.aks_cluster_name}"
+  name                = var.aks_cluster_name
   resource_group_name = azurerm_resource_group.resource_group.name
   location            = var.location
   node_resource_group = "${var.aks_cluster_name}-np01"
@@ -33,9 +33,14 @@ resource "azurerm_kubernetes_cluster" "aks" {
     docker_bridge_cidr = "172.18.0.1/16"
     service_cidr       = "172.16.0.0/16"
     load_balancer_sku  = "standard"
-    outbound_type      = "userAssignedNATGateway"
-    nat_gateway_profile {
-      idle_timeout_in_minutes = 4
+    # outbound_type      = "userAssignedNATGateway"
+
+    # nat_gateway_profile {
+    #   idle_timeout_in_minutes = 4
+    # }
+
+    load_balancer_profile {
+      # outbound_ip_address_ids = [for ip in data.azurerm_public_ip.aks-public-ip : ip.id]
     }
   }
 
@@ -43,9 +48,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type = "SystemAssigned"
   }
 
-  lifecycle {
-    ignore_changes = [
-      network_profile[0].nat_gateway_profile
-    ]
-  }
+  # lifecycle {
+  #   ignore_changes = [
+  #     network_profile[0].nat_gateway_profile
+  #   ]
+  # }
 }
