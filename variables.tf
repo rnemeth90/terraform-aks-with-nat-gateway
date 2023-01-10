@@ -12,12 +12,12 @@ variable "aks_cluster_name" {
 
 variable "vnet" {
   type = object({
-    cird            = string
-    sn_cluster_cird = string
+    cidr            = string
+    sn_cluster_cidr = string
   })
   default = {
-    cird            = "10.1.0.0/16"
-    sn_cluster_cird = "10.1.0.0/22"
+    cidr            = "10.1.0.0/16"
+    sn_cluster_cidr = "10.1.0.0/22"
   }
   description = "The VNET and subnet configuration."
 }
